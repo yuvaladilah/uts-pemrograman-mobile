@@ -18,9 +18,6 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var edtPassword: EditText
     private lateinit var edtConfirmPassword: EditText
     private lateinit var register: Button
-    private lateinit var backhome: Button
-    private lateinit var login: Button
-
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,12 +32,15 @@ class RegisterActivity : AppCompatActivity() {
         edtConfirmPassword = findViewById(R.id.inputConfirmPassword)
         edtConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
         register = findViewById(R.id.btn_register)
-        backhome = findViewById(R.id.back_home)
-        login = findViewById(R.id.tv_havent_account)
 
-        btnBackListener()
-        btnSignInListener()
         btnRegisterListener()
+    }
+
+
+
+
+    private fun btnBackToHome() {
+
     }
 
     private fun btnRegisterListener() {
@@ -92,18 +92,7 @@ class RegisterActivity : AppCompatActivity() {
         return email == storedEmail
     }
 
-    private fun btnBackListener() {
-        // Assuming you have back_2 view in your layout
-        backhome.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
-        }
+
     }
 
-    private fun btnSignInListener() {
-        // Assuming you have txt_signin view in your layout
-        login.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
-    }
-}
 
