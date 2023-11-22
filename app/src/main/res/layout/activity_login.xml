@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
     android:padding="20dp"
-    android:background="@drawable/bg_login">
+    android:background="@drawable/bg_login"
+    android:id="@+id/container_login">
+
 
     <ImageView
         android:id="@+id/logo_image"
@@ -131,12 +133,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/back_home"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/baseline_arrow_back_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

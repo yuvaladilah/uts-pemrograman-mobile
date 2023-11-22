@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 
 
 class LoginActivity : AppCompatActivity() {
@@ -17,7 +18,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var edtPassword: EditText
     private lateinit var btnLogin: Button
     private lateinit var tvSignUp: TextView
-    private lateinit var backhome: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,17 +29,12 @@ class LoginActivity : AppCompatActivity() {
         btnLogin = findViewById(R.id.btn_login)
         tvSignUp = findViewById(R.id.tv_havent_account)
 
-        btnBackListener()
+
         btnSubmitListener()
         btnSignUpListener()
 
     }
 
-    private fun btnBackListener() {
-        backhome.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
-        }
-    }
 
     private fun btnSubmitListener() {
         btnLogin.setOnClickListener {
@@ -54,12 +49,21 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
 
                 // Kembali ke halaman utama
-                startActivity(Intent(this, DashboardFragment::class.java))
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+
+//                var mainFragment: DashboardFragment = DashboardFragment()
+//                supportFragmentManager.beginTransaction().add(R.id.container, mainFragment)
+//                    .commit()
+
+
             } else {
                 // Login gagal
                 Toast.makeText(this, "Incorrect username or password", Toast.LENGTH_SHORT).show()
             }
+
         }
+
     }
 
     private fun btnSignUpListener() {
@@ -67,5 +71,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
+
     }
 

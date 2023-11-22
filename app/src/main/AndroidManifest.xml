@@ -16,6 +16,10 @@
             android:name=".ToDoListActivity"
             android:exported="false" />
         <activity
+            android:name=".DashboardFragment"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity

@@ -135,24 +135,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputConfirmPassword" />
 
-    <TextView
-        android:id="@+id/tv_have_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/quicksand_medium"
-        android:textColor="@color/black"
-        android:layout_marginTop="40dp"
-        android:textSize="14sp"
-        android:text="@string/register_have_account"
-        app:layout_constraintTop_toBottomOf="@+id/btn_register"
-        tools:layout_editor_absoluteX="20dp" />
-
-    <ImageView
-        android:id="@+id/back_home"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/baseline_arrow_back_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

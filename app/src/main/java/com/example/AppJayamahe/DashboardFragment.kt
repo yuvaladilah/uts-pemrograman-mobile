@@ -34,6 +34,7 @@ class DashboardFragment : Fragment() {
         }
     }
 
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,6 +89,7 @@ class DashboardFragment : Fragment() {
 
         return _view
     }
+
 
 
     companion object {
