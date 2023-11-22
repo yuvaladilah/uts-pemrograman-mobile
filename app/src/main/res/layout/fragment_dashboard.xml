@@ -137,7 +137,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/calculator"
+                android:id="@+id/goListView"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 app:cardCornerRadius="15dp"
@@ -157,22 +157,20 @@
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/baseline_calculate_24"
+                        android:src="@drawable/baseline_sports_martial_arts_24"
                         android:layout_gravity="center_horizontal"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Calculator"
+                        android:text="BMKG data"
                         android:layout_gravity="center_horizontal"
                         android:textSize="18sp"
                         android:textColor="@color/black"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
-
             </androidx.cardview.widget.CardView>
-
 
         </GridLayout>
 

@@ -10,6 +10,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.android.volley.AuthFailureError
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 
 
 class LoginActivity : AppCompatActivity() {
@@ -35,7 +42,6 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-
     private fun btnSubmitListener() {
         btnLogin.setOnClickListener {
             val username = edtEmail.text.toString()
@@ -52,25 +58,50 @@ class LoginActivity : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
 
-//                var mainFragment: DashboardFragment = DashboardFragment()
-//                supportFragmentManager.beginTransaction().add(R.id.container, mainFragment)
-//                    .commit()
+                // Add the Volley request here
+                val url = "http://192.168.1.2/Simple/myfile.php"
+                val myRequestQueue: RequestQueue = Volley.newRequestQueue(this)
 
+                val stringRequest = object : StringRequest(
+                    Request.Method.POST, url,
+                    Response.Listener<String> { response ->
+                        Toast.makeText(applicationContext, response, Toast.LENGTH_LONG).show()
+                    },
+                    object : Response.ErrorListener {
+                        override fun onErrorResponse(error: VolleyError) {
+                            Toast.makeText(
+                                applicationContext,
+                                error.message.toString(),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }) {
+
+                    @Throws(AuthFailureError::class)
+                    override fun getParams(): Map<String, String> {
+                        val map = HashMap<String, String>()
+                        map["username"] = username
+                        map["password"] = password
+                        return map
+                    }
+                }
+
+                myRequestQueue.add(stringRequest)
 
             } else {
                 // Login gagal
                 Toast.makeText(this, "Incorrect username or password", Toast.LENGTH_SHORT).show()
             }
-
         }
-
     }
+
 
     private fun btnSignUpListener() {
         tvSignUp.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
+}
 
-    }
+
 

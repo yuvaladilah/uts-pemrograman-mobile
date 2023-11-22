@@ -1,15 +1,14 @@
 package com.example.AppJayamahe
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
-import android.view.Window
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.*
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -18,12 +17,15 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var edtPassword: EditText
     private lateinit var edtConfirmPassword: EditText
     private lateinit var register: Button
+    private lateinit var databaseReference: DatabaseReference
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_register)
+
+        // Initialize Firebase Realtime Database
+        databaseReference =
+            FirebaseDatabase.getInstance().getReferenceFromUrl("https://appjayamahe-default-rtdb.firebaseio.com/")
 
         edtEmailSign = findViewById(R.id.inputEmailSign)
         edtUsername = findViewById(R.id.inputUsername)
@@ -36,13 +38,6 @@ class RegisterActivity : AppCompatActivity() {
         btnRegisterListener()
     }
 
-
-
-
-    private fun btnBackToHome() {
-
-    }
-
     private fun btnRegisterListener() {
         register.setOnClickListener {
             val email = edtEmailSign.text.toString()
@@ -51,13 +46,11 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Cek apakah password dan confirm password sama
             if (edtPassword.text.toString() != edtConfirmPassword.text.toString()) {
                 Toast.makeText(this, "Incorrect Password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Cek apakah semua edittext terisi
             if (edtUsername.text.toString().isEmpty() ||
                 edtPassword.text.toString().isEmpty() ||
                 edtEmailSign.text.toString().isEmpty() ||
@@ -68,31 +61,22 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // simpan data register
-            val sharedPreferences = getSharedPreferences("my_preferences", MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.putString("username", edtUsername.text.toString())
-            editor.putString("password", edtPassword.text.toString())
-            editor.putString("email", edtEmailSign.text.toString())
-            editor.putString("confirm_password", edtConfirmPassword.text.toString())
-            editor.apply()
+            // Save registration data to Firebase Realtime Database
+            val userId = databaseReference.child("users").push().key // Create a unique key for each user
+            val userRef = databaseReference.child("users").child(userId!!)
+            userRef.child("username").setValue(edtUsername.text.toString())
+            userRef.child("email").setValue(email)
 
-            // tampilkan "Register Berhasil"
             Toast.makeText(this, "Account Created", Toast.LENGTH_SHORT).show()
 
-            // Kembali Ke Halaman Login
+            // Return to the Login Page
             startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 
     private fun emailExist(email: String): Boolean {
-        // cek apakah email sudah ada di shared preferences
-        val sharedPreferences = getSharedPreferences("my_preferences", MODE_PRIVATE)
-        val storedEmail = sharedPreferences.getString("email", "")
-        return email == storedEmail
+        // Check if the email already exists in the Firebase Realtime Database
+        // Modify this logic according to your data structure and application needs
+        return false
     }
-
-
-    }
-
-
+}

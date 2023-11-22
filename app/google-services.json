@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "584185011319",
+    "project_id": "appjayamahe",
+    "storage_bucket": "appjayamahe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584185011319:android:da3a94fcb88eb415013a72",
+        "android_client_info": {
+          "package_name": "com.example.AppJayamahe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTP83LO3lpc1heKT5IIjK8b1WwUDbO9oQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

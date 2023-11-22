@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import com.example.AppJayamahe.adapter.tampilgempaAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,13 +46,12 @@ class DashboardFragment : Fragment() {
         var go_home: CardView
         var go_profile: CardView
         var go_todolist: CardView
-        var go_convert: CardView
-        var go_calculator: CardView
-        var go_bmi: CardView
+        var go_listView: CardView
 
         go_home = _view.findViewById(R.id.goHome)
         go_profile = _view.findViewById(R.id.goProfile)
         go_todolist = _view.findViewById(R.id.goToDoList)
+        go_listView = _view.findViewById(R.id.goListView)
 //        go_convert = _view.findViewById(R.id.goConversionCurrent)
 //        go_calculator = _view.findViewById(R.id.goCalculator)
 //        go_bmi = _view.findViewById(R.id.goBMI)
@@ -71,20 +71,10 @@ class DashboardFragment : Fragment() {
             startActivity(intent)
         }
 
-//        go_convert.setOnClickListener {
-//            val intent = Intent(requireContext(), ConvertCurrentFragment::class.java)
-//            startActivity(intent)
-//        }
-//
-//        go_calculator.setOnClickListener {
-//            val intent = Intent(requireContext(), CalculatorFragment::class.java)
-//            startActivity(intent)
-//        }
-//
-//        go_bmi.setOnClickListener {
-//            val intent = Intent(requireContext(), BmiFragment::class.java)
-//            startActivity(intent)
-//        }
+        go_listView.setOnClickListener {
+            val intent = Intent(requireContext(), TampilGempa::class.java)
+            startActivity(intent)
+        }
 
 
         return _view

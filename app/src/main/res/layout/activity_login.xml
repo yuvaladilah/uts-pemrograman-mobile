@@ -9,7 +9,6 @@
     android:background="@drawable/bg_login"
     android:id="@+id/container_login">
 
-
     <ImageView
         android:id="@+id/logo_image"
         android:layout_width="250dp"
