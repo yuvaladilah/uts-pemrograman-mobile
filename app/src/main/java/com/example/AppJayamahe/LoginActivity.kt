@@ -10,13 +10,11 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.android.volley.AuthFailureError
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -25,83 +23,88 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var edtPassword: EditText
     private lateinit var btnLogin: Button
     private lateinit var tvSignUp: TextView
+    // Inisialisasi DatabaseReference untuk node "users"
+    private lateinit var usersRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        // Inisialisasi DatabaseReference dengan Firebase Realtime Database
+        usersRef = FirebaseDatabase.getInstance().getReference("users")
+
         edtEmail = findViewById(R.id.inputEmail)
         edtPassword = findViewById(R.id.inputPassword)
-        edtPassword.setTransformationMethod(PasswordTransformationMethod())
+        edtPassword.transformationMethod = PasswordTransformationMethod.getInstance()
         btnLogin = findViewById(R.id.btn_login)
         tvSignUp = findViewById(R.id.tv_havent_account)
-
 
         btnSubmitListener()
         btnSignUpListener()
 
     }
 
+
+
     private fun btnSubmitListener() {
         btnLogin.setOnClickListener {
             val username = edtEmail.text.toString()
             val password = edtPassword.text.toString()
 
-            val sharedPreferences = getSharedPreferences("my_preferences", MODE_PRIVATE)
-            val storedUsername = sharedPreferences.getString("username", "")
-            val storedPassword = sharedPreferences.getString("password", "")
-            if (username == storedUsername && password == storedPassword) {
-                // Login berhasil
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+            // Assuming usersRef is a DatabaseReference pointing to your "users" node
+            usersRef.orderByChild("username").equalTo(username)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (userSnapshot in dataSnapshot.children) {
+                                val storedPassword =
+                                    userSnapshot.child("password").getValue(String::class.java)
 
-                // Kembali ke halaman utama
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-
-                // Add the Volley request here
-                val url = "http://192.168.1.2/Simple/myfile.php"
-                val myRequestQueue: RequestQueue = Volley.newRequestQueue(this)
-
-                val stringRequest = object : StringRequest(
-                    Request.Method.POST, url,
-                    Response.Listener<String> { response ->
-                        Toast.makeText(applicationContext, response, Toast.LENGTH_LONG).show()
-                    },
-                    object : Response.ErrorListener {
-                        override fun onErrorResponse(error: VolleyError) {
+                                if (password == storedPassword) {
+                                    // Login successful
+                                    Toast.makeText(
+                                        this@LoginActivity,
+                                        "Login successful",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    startActivity(
+                                        Intent(
+                                            this@LoginActivity,
+                                            MainActivity::class.java
+                                        )
+                                    )
+                                    finish() // Finish current activity to prevent going back to login form
+                                    return
+                                }
+                            }
+                            // Incorrect password
                             Toast.makeText(
-                                applicationContext,
-                                error.message.toString(),
-                                Toast.LENGTH_LONG
+                                this@LoginActivity,
+                                "Incorrect password",
+                                Toast.LENGTH_SHORT
                             ).show()
+                        } else {
+                            // User not found
+                            Toast.makeText(this@LoginActivity, "User not found", Toast.LENGTH_SHORT)
+                                .show()
                         }
-                    }) {
-
-                    @Throws(AuthFailureError::class)
-                    override fun getParams(): Map<String, String> {
-                        val map = HashMap<String, String>()
-                        map["username"] = username
-                        map["password"] = password
-                        return map
                     }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        // Handle error
+                        Toast.makeText(this@LoginActivity, "Error during login", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                })
+        }
+    }
+
+
+
+
+            private fun btnSignUpListener() {
+                tvSignUp.setOnClickListener {
+                    startActivity(Intent(this, RegisterActivity::class.java))
                 }
-
-                myRequestQueue.add(stringRequest)
-
-            } else {
-                // Login gagal
-                Toast.makeText(this, "Incorrect username or password", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-
-    private fun btnSignUpListener() {
-        tvSignUp.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
-    }
-}
-
-
-

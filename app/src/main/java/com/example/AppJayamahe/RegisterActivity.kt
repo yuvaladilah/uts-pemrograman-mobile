@@ -65,18 +65,22 @@ class RegisterActivity : AppCompatActivity() {
             val userId = databaseReference.child("users").push().key // Create a unique key for each user
             val userRef = databaseReference.child("users").child(userId!!)
             userRef.child("username").setValue(edtUsername.text.toString())
+            userRef.child("password").setValue(edtPassword.text.toString())
             userRef.child("email").setValue(email)
 
             Toast.makeText(this, "Account Created", Toast.LENGTH_SHORT).show()
 
             // Return to the Login Page
             startActivity(Intent(this, LoginActivity::class.java))
+            finish() // Finish current activity to prevent going back to registration form
         }
     }
 
     private fun emailExist(email: String): Boolean {
         // Check if the email already exists in the Firebase Realtime Database
         // Modify this logic according to your data structure and application needs
+        // You need to implement the logic to check if the email already exists in your Firebase database
+        // For simplicity, I'm returning false here, you should update it based on your implementation
         return false
     }
 }
